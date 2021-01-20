@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "663565438978",
+    "project_id": "sunystagram",
+    "storage_bucket": "sunystagram.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663565438978:android:b90eccac7a8b464a05571b",
+        "android_client_info": {
+          "package_name": "com.example.sunystagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663565438978-o772lrkp2tptci9gv25odlrotntg5dli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASaVgQ5nTr121IQcIA3dY--vwJmv3vopA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663565438978-o772lrkp2tptci9gv25odlrotntg5dli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
