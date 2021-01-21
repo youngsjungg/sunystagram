@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Sunystagram</string>
-    <string name="facebook_app_id">432125291168304</string>
-    <string name="fb_login_protocol_scheme">fb432125291168304</string>
+    <string name="facebook_app_id">902660903839742</string>
+    <string name="fb_login_protocol_scheme">fb902660903839742</string>
+
 
 
     <!-- Sign In -->
