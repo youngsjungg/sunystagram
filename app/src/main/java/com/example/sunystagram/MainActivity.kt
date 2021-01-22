@@ -1,12 +1,14 @@
 package com.example.sunystagram
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import com.example.sunystagram.navigation.AlarmFragment
-import com.example.sunystagram.navigation.DetailViewFragment
-import com.example.sunystagram.navigation.GridFragment
-import com.example.sunystagram.navigation.UserFragment
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.example.sunystagram.navigation.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -24,7 +26,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 return true
             }
             R.id.action_add_photo-> {
-
+                 //호출권한을 줌
+                //외부 권한이 있는지 확인
+                if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
+                    startActivity(Intent(this, AddPhotoActivity::class.java))
+                }
                 return true
             }
             R.id.action_favorite_alarm -> {
@@ -47,6 +53,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottom_navigation.setOnNavigationItemSelectedListener(this)
+        //사진을 가져올 수 있는 권한
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
+
 
     }
 
