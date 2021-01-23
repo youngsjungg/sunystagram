@@ -37,6 +37,7 @@
         <ImageView
             android:id="@+id/detailviewitem_favorite_imageview"
             android:src="@drawable/ic_favorite_border"
+            android:layout_marginLeft="8dp"
             android:layout_width="35dp"
             android:layout_height="35dp"/>
         <ImageView
@@ -54,6 +55,8 @@
 
     <TextView
         android:id="@+id/detailviewitem_explain_textview"
+        android:layout_marginRight="8dp"
+
         android:text="Explain_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

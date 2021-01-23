@@ -56,6 +56,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         //사진을 가져올 수 있는 권한
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
 
+        //set default screen
+        bottom_navigation.selectedItemId = R.id.action_home
+
+
 
     }
 
