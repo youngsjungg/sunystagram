@@ -3,62 +3,65 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
         <ImageView
-            android:id="@+id/datailviewitem_profile_image"
-            android:src="@mipmap/ic_launcher"
-            android:layout_margin="7.5dp"
+            android:id="@+id/detailviewitem_profile_image"
             android:layout_width="35dp"
-            android:layout_height="35dp"/>
-
-
-    <TextView
-        android:text="User name"
-        android:id="@+id/detailviewitem_profile_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+            android:layout_height="35dp"
+            android:layout_margin="7.5dp"
+            android:src="@mipmap/ic_launcher" />
+        <TextView
+            android:id="@+id/detailviewitem_profile_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name" />
     </LinearLayout>
+
+    <!-- Content ImageView -->
     <ImageView
         android:id="@+id/detailviewitem_imageview_content"
-        android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_height="250dp"
+        android:scaleType="fitXY"/>
+
+    <!-- favorite & comment -->
     <LinearLayout
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp">
+
         <ImageView
             android:id="@+id/detailviewitem_favorite_imageview"
-            android:src="@drawable/ic_favorite_border"
-            android:layout_marginLeft="8dp"
             android:layout_width="35dp"
-            android:layout_height="35dp"/>
+            android:layout_height="35dp"
+            android:src="@drawable/ic_favorite_border" />
         <ImageView
-            android:id="@+id/detailviewitem_coment_imageview"
-            android:src="@drawable/ic_chat_black"
+            android:id="@+id/detailviewitem_comment_imageview"
             android:layout_width="35dp"
-            android:layout_height="35dp"/>
-
+            android:layout_height="35dp"
+            android:src="@drawable/ic_chat_black" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/detailviewitem_favoritecount_textview"
-        android:text="like 0"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="like 0"/>
 
     <TextView
         android:id="@+id/detailviewitem_explain_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
-
         android:text="Explain_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginBottom="35dp"
+        android:layout_marginLeft="8dp"/>
 
 </LinearLayout>

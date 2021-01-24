@@ -73,7 +73,7 @@ import java.util.*
          //Primise method
          storageRef?.putFile(photoUri!!)?.continueWithTask { task: com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> ->
              return@continueWithTask storageRef.downloadUrl
-         }?.addOnCompleteListener { uri ->
+         }?.addOnSuccessListener { uri ->
              var contentDTO = ContentDTO()
 
              contentDTO.imageUrl = uri.toString()
