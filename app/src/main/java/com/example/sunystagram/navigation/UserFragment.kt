@@ -31,11 +31,11 @@ class  UserFragment : Fragment() {
         firestore = FirebaseFirestore.getInstance()//초기화
         auth = FirebaseAuth.getInstance() //초기화
 
-        fragmentView?.account_reclerview?.adapter = UserFragmentRecycleerViewAdapter()
-        fragmentView?.account_reclerview?.layoutManager = GridLayoutManager(activity!!,3) //칸에 3개씩 뜨도록
+        fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
+        fragmentView?.account_recyclerview?.layoutManager = GridLayoutManager(activity!!,3) //칸에 3개씩 뜨도록
         return fragmentView
     }
-    inner class UserFragmentRecycleerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
         init {
             //내 uid만 검색
