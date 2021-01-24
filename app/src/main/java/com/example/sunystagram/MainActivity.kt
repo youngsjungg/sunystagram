@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.sunystagram.navigation.*
@@ -29,8 +30,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                  //호출권한을 줌
                 //외부 권한이 있는지 확인
                 if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
-                    startActivity(Intent(this, AddPhotoActivity::class.java))
+                     startActivity(Intent(this, AddPhotoActivity::class.java))
                 }
+//                else{
+//                    Toast.makeText(this, "스토리지 읽기 권한이 없습니다. ",Toast.LENGTH_LONG).show()
+//                }
                 return true
             }
             R.id.action_favorite_alarm -> {
