@@ -1,5 +1,6 @@
 package com.example.sunystagram.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.sunystagram.LoginActivity
+import com.example.sunystagram.MainActivity
 import com.example.sunystagram.R
 import com.example.sunystagram.navigation.model.ContentDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 
@@ -25,11 +29,43 @@ class  UserFragment : Fragment() {
     var firestore : FirebaseFirestore? = null
     var uid : String?= null
     var auth : FirebaseAuth?=  null
+    var currentUserUid : String?= null
     override fun onCreateView (inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user,container,false)
         uid = arguments?.getString("destinationUid")//이전에서 넘어온 값을 받아옴
         firestore = FirebaseFirestore.getInstance()//초기화
         auth = FirebaseAuth.getInstance() //초기화
+        currentUserUid = auth?.currentUser?.uid
+
+        if (uid == currentUserUid){
+            //my page
+            fragmentView?.account_btn_follow_signout?.text = getString(R.string.signout)
+            fragmentView?.account_btn_follow_signout?.setOnClickListener {
+                activity?.finish()
+                startActivity(Intent(activity,LoginActivity::class.java))
+                auth?.signOut() //firebase에 보냄
+
+            }
+        }else{
+            //OtherUserPage
+            fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
+            var mainActivity = (activity as MainActivity)
+            mainActivity?.toolbar_username?.text = arguments?.getString("userId")
+
+            //뒤로가기 Event
+            mainActivity?.toolbar_btn_back?.setOnClickListener {
+                mainActivity.bottom_navigation.selectedItemId = R.id.action_home
+
+                //이미지뷰 로고 숨김
+                mainActivity?.toolbar_title_image?.visibility = View.GONE
+                mainActivity?.toolbar_username?.visibility = View.VISIBLE
+                mainActivity?.toolbar_btn_back?.visibility = View.VISIBLE
+            }
+
+
+        }
+
+
 
         fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
         fragmentView?.account_recyclerview?.layoutManager = GridLayoutManager(activity!!,3) //칸에 3개씩 뜨도록

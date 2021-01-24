@@ -61,6 +61,11 @@ class LoginActivity : AppCompatActivity() {
         callbackManager =  CallbackManager.Factory.create()
 
     }
+
+    override fun onStart() {
+        super.onStart()
+        moveMainPage(auth?.currentUser)
+    }
     fun printHashKey() {
         try {
             val info: PackageInfo = packageManager.getPackageInfo(packageName, GET_SIGNATURES)
@@ -184,6 +189,7 @@ class LoginActivity : AppCompatActivity() {
     fun moveMainPage(user: FirebaseUser?){ //로그인 성공시 다음 페이지로 넘어감로
         if (user != null){
             startActivity(Intent(this, MainActivity::class.java))//firebase 유저상태를 넘기고 담 페이지로, ㅡmainactivity
+            finish()  //loginactivity가 꺼지면 mainactivity가 켜짐
         }
 
     }

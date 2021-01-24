@@ -32,7 +32,6 @@ class DetailViewFragment : Fragment() {
 
         return view
     }
-
     inner class DetailViewRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var contentDTOs: ArrayList<ContentDTO> = arrayListOf()
         var contntUidLIst: ArrayList<String> = arrayListOf()
@@ -93,6 +92,17 @@ class DetailViewFragment : Fragment() {
                     viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
 
                 }
+
+                //profileimage 이미지 누르면 상대방 유저 정보로 이동
+                viewHolder.detailviewitem_profile_image.setOnClickListener {
+                    var  fragment = UserFragment()
+                    var  bundle = Bundle()
+                    bundle.putString("destinationUid",contentDTOs[p1].uid)
+                    bundle.putString("userId",  contentDTOs[p1].UserId)
+                    fragment.arguments = bundle
+                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+                }
+
 
 
 
