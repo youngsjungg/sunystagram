@@ -44,7 +44,7 @@ class   UserFragment : Fragment() {
         if (uid == currentUserUid){
             //my page
             fragmentView?.account_btn_follow_signout?.text = getString(R.string.signout)
-            fragmentView?.account_btn_follow_signout?.setOnClickListener {
+            fragmentView ?.account_btn_follow_signout?.setOnClickListener {
                 activity?.finish()
                 startActivity(Intent(activity,LoginActivity::class.java))
                 auth?.signOut() //firebase에 보냄
@@ -66,8 +66,6 @@ class   UserFragment : Fragment() {
                 mainactivity?.toolbar_btn_back?.visibility = View.VISIBLE
         }
 
-
-
         fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
         fragmentView?.account_recyclerview?.layoutManager = GridLayoutManager(activity!!,3) //칸에 3개씩 뜨도록
 
@@ -81,7 +79,7 @@ class   UserFragment : Fragment() {
     }
     //올린 이미지를 다운받음
     fun  getProfileimage(){
-        firestore?.collection("prifileimage")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+        firestore?.collection("profileimages")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             if (documentSnapshot ==null ) return@addSnapshotListener //코드 안전성을 위함
             if (documentSnapshot.data != null) { // 값이 있으면 이미지주소를 받아옴
                 var url = documentSnapshot?.data!!["image"]

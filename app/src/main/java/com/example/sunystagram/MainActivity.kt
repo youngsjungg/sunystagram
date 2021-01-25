@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             var storageRef = FirebaseStorage.getInstance().reference.child("userprofileImages").child(uid!!)
             storageRef.putFile(imageUri!!).continueWithTask {
                 return@continueWithTask storageRef.downloadUrl
-            }.addOnCompleteListener { uri -> //userprofile 을 선택 , database에 업로드
+            }.addOnSuccessListener { uri -> //userprofile 을 선택 , database에 업로드
                 var map = HashMap<String, Any>()
                 map["image"] = uri.toString()
                 FirebaseFirestore.getInstance().collection("profileimages").document(uid).set(map)
