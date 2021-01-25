@@ -110,16 +110,18 @@ class DetailViewFragment : Fragment() {
                     var tsDoc = firestore?.collection("images")?.document(contntUidLIst[position])
                     firestore?.runTransaction {
                         transaction ->
+                        var uid = FirebaseAuth.getInstance().currentUser?.uid
                         var contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)//dto로 캐스팅
 
                         //이미 좋아요가 클릭시,  아닐시
                         if (contentDTO!!.favorites.containsKey(uid)){
                             //눌림 ,눌린거 취소
                             contentDTO?.favoriteCount = contentDTO?.favoriteCount -1
-                            contentDTO?.favorites[uid!!]=true
+                            contentDTO?.favorites.remove(uid)
                         } else{//안눌림 클릭 이벤트
                             contentDTO?.favoriteCount = contentDTO?.favoriteCount +1
                             contentDTO?.favorites[uid!!] = true
+
 
                         }
 
