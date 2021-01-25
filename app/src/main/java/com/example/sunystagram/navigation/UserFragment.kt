@@ -76,7 +76,18 @@ class   UserFragment : Fragment() {
             photoPickerIntent.type = "image/*"
             activity?.startActivityForResult(photoPickerIntent,PICK_PROFILE_FROM_ALBUM)
         }
+        getProfileimage()
         return fragmentView
+    }
+    //올린 이미지를 다운받음
+    fun  getProfileimage(){
+        firestore?.collection("prifileimage")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+            if (documentSnapshot ==null ) return@addSnapshotListener //코드 안전성을 위함
+            if (documentSnapshot.data != null) { // 값이 있으면 이미지주소를 받아옴
+                var url = documentSnapshot?.data!!["image"]
+                Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.account_iv_profile!!) //이미지 다운
+            }
+         }
     }
     inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
