@@ -76,8 +76,8 @@ import java.util.*
          }?.addOnSuccessListener { uri ->
              var contentDTO = ContentDTO()
 
-             contentDTO.imageUrl = uri.toString()
-//
+                 contentDTO.imageUrl = uri.toString()
+
                  contentDTO.uid = auth?.currentUser?.uid
 
                  contentDTO.UserId = auth?.currentUser?.email

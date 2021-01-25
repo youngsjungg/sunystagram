@@ -24,12 +24,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 
-class  UserFragment : Fragment() {
+class   UserFragment : Fragment() {
     var fragmentView : View?= null
     var firestore : FirebaseFirestore? = null
     var uid : String?= null
     var auth : FirebaseAuth?=  null
     var currentUserUid : String?= null
+    companion object{
+        var PICK_PROFILE_FROM_ALBUM = 10
+    }
+
     override fun onCreateView (inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user,container,false)
         uid = arguments?.getString("destinationUid")//이전에서 넘어온 값을 받아옴
@@ -49,26 +53,29 @@ class  UserFragment : Fragment() {
         }else{
             //OtherUserPage
             fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
-            var mainActivity = (activity as MainActivity)
-            mainActivity?.toolbar_username?.text = arguments?.getString("userId")
+            var mainactivity = (activity as MainActivity)
+            mainactivity?.toolbar_username?.text = arguments?.getString("userId")
 
             //뒤로가기 Event
-            mainActivity?.toolbar_btn_back?.setOnClickListener {
-                mainActivity.bottom_navigation.selectedItemId = R.id.action_home
-
-                //이미지뷰 로고 숨김
-                mainActivity?.toolbar_title_image?.visibility = View.GONE
-                mainActivity?.toolbar_username?.visibility = View.VISIBLE
-                mainActivity?.toolbar_btn_back?.visibility = View.VISIBLE
+            mainactivity?.toolbar_btn_back?.setOnClickListener {
+                mainactivity.bottom_navigation.selectedItemId = R.id.action_home
             }
-
-
+                //이미지뷰 로고 숨김
+                mainactivity?.toolbar_title_image?.visibility = View.GONE
+                mainactivity?.toolbar_username?.visibility = View.VISIBLE
+                mainactivity?.toolbar_btn_back?.visibility = View.VISIBLE
         }
 
 
 
         fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
         fragmentView?.account_recyclerview?.layoutManager = GridLayoutManager(activity!!,3) //칸에 3개씩 뜨도록
+
+        fragmentView?.account_iv_profile?.setOnClickListener {
+            var photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            activity?.startActivityForResult(photoPickerIntent,PICK_PROFILE_FROM_ALBUM)
+        }
         return fragmentView
     }
     inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){

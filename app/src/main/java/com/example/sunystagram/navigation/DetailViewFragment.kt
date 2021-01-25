@@ -41,6 +41,8 @@ class DetailViewFragment : Fragment() {
             firestore?.collection("images")?.orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentDTOs.clear() //초기화
                 contntUidLIst.clear() //초기화
+                if (querySnapshot == null)
+                    return@addSnapshotListener
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject(ContentDTO::class.java)//contentDTO 방식으로 캐스팅
                     contentDTOs.add(item!!)
@@ -95,19 +97,14 @@ class DetailViewFragment : Fragment() {
 
                 //profileimage 이미지 누르면 상대방 유저 정보로 이동
                 viewHolder.detailviewitem_profile_image.setOnClickListener {
-                    var  fragment = UserFragment()
-                    var  bundle = Bundle()
+                    var fragment = UserFragment()
+                    var bundle = Bundle()
                     bundle.putString("destinationUid",contentDTOs[p1].uid)
-                    bundle.putString("userId",  contentDTOs[p1].UserId)
+                    bundle.putString("userId",contentDTOs[p1].UserId)
                     fragment.arguments = bundle
                     activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
                 }
-
-
-
-
-
-            }
+             }
              //선택한 이미지의 uid를 받아와 좋아요
                 fun favoriteEvent(position : Int) {
                     var tsDoc = firestore?.collection("images")?.document(contntUidLIst[position])
