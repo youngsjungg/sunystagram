@@ -1,6 +1,7 @@
 package com.example.sunystagram.navigation
 
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -79,7 +81,38 @@ class   UserFragment : Fragment() {
             activity?.startActivityForResult(photoPickerIntent,PICK_PROFILE_FROM_ALBUM)
         }
         getProfileimage()
+        getFollowerAndFollowing()
         return fragmentView
+    }
+    fun getFollowerAndFollowing(){//화면에 카운터 변환하기
+
+        //내 uid은 내 uid, 상대방 uid클릭은 상대 uid
+        firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+            if (documentSnapshot ==null)return@addSnapshotListener
+            var followDTO = documentSnapshot.toObject(FollowDTO::class.java)
+            if (followDTO?.followingCount != null) {
+            //조건 충족시 값 출력
+                fragmentView?.account_tv_follower_count?.text = followDTO?.followingCount?.toString()
+            }
+            if (followDTO?.followerCount != null) {
+                //조건 충족시 값 출력
+                fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
+                if (followDTO?.followers?.containsKey(currentUserUid!!)){//내가 팔로워시 버튼변환
+                 fragmentView?.account_btn_follow_signout?.text =getString(R.string.follow_cancel)//내 uid가 있을 경우
+                 fragmentView?.account_btn_follow_signout?.background?.setcolorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
+
+                }else{
+                    if (uid != currentUserUid){
+                        fragmentView?.account_btn_follow_signout?.text =getString(R.string.follow) //내 uid가 없을 경우
+                        fragmentView?.account_btn_follow_signout?.background?.colorFilter =null
+                    }
+
+                }
+            }
+        }
+
+
+
     }
     fun requestFollow() {
         var tsDocFollowing = firestore!!.collection("users").document(currentUserUid!!) //내가 상대방 누가 팔로우하는지
