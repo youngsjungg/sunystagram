@@ -99,7 +99,8 @@ class   UserFragment : Fragment() {
                 fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
                 if (followDTO?.followers?.containsKey(currentUserUid!!)){//내가 팔로워시 버튼변환
                  fragmentView?.account_btn_follow_signout?.text =getString(R.string.follow_cancel)//내 uid가 있을 경우
-                 fragmentView?.account_btn_follow_signout?.background?.setcolorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
+                 fragmentView?.account_btn_follow_signout?.background?.
+                 setcolorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
 
                 }else{
                     if (uid != currentUserUid){
@@ -218,5 +219,9 @@ class   UserFragment : Fragment() {
         }
 
     }
+}
+
+private fun Any?.setcolorFilter(color: Int, multiply: PorterDuff.Mode) {   //삭제필요
+
 }
 
