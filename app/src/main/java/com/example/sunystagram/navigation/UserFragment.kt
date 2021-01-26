@@ -18,6 +18,7 @@ import com.example.sunystagram.LoginActivity
 import com.example.sunystagram.MainActivity
 import com.example.sunystagram.R
 import com.example.sunystagram.navigation.model.ContentDTO
+import com.example.sunystagram.navigation.model.FollowDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
@@ -64,6 +65,9 @@ class   UserFragment : Fragment() {
                 mainactivity?.toolbar_title_image?.visibility = View.GONE
                 mainactivity?.toolbar_username?.visibility = View.VISIBLE
                 mainactivity?.toolbar_btn_back?.visibility = View.VISIBLE
+                fragmentView?.account_btn_follow_signout?.setOnClickListener {
+                    requestFollow()
+                }
         }
 
         fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
@@ -77,6 +81,60 @@ class   UserFragment : Fragment() {
         getProfileimage()
         return fragmentView
     }
+    fun requestFollow() {
+        var tsDocFollowing = firestore!!.collection("users").document(currentUserUid!!) //내가 상대방 누가 팔로우하는지
+        firestore?.runTransaction { transaction ->
+            var followDTO = transaction.get(tsDocFollowing!!).toObject(FollowDTO::class.java)
+            if (followDTO == null) {
+                followDTO = FollowDTO()
+                followDTO!!.followerCount = 1
+                followDTO!!.followers[uid!!] = true  //중복 팔로우 방지
+
+                transaction.set(tsDocFollowing, followDTO)
+                return@runTransaction //데이터 모델을 넣어주면 데이터가 db에 담김
+            }
+            if (followDTO.followings.containsKey(uid)) {//팔로우 한 상태 : 팔로잉취소
+                followDTO?.followingCount = followDTO?.followingCount - 1
+                followDTO?.followers?.remove(uid)
+
+            } else {//팔로잉
+                followDTO?.followingCount = followDTO?.followingCount + 1
+                followDTO?.followers[uid!!] = true
+            }
+            transaction.set(tsDocFollowing, followDTO)
+            return@runTransaction
+
+        }
+        //상대방 계정에 타인이 팔로우
+        var  tsDocFollower = firestore?.collection("users")?.document(uid!!)
+        firestore?.runTransaction { transaction ->
+           var followDTO = transaction.get(tsDocFollower!!).toObject(FollowDTO::class.java) //followDTO값을 읽어옴
+
+            if (followDTO == null){//값이 없으면 데이터 모델을 만듬 최초값이라 1
+                followDTO = FollowDTO()
+                followDTO!!.followerCount = 1
+                followDTO!!.followers[currentUserUid!!] = true//상대방 계정에 내 uid를 넣어줌
+
+                transaction.set(tsDocFollower,followDTO!!)//DB에 값을 넣어줌
+                return@runTransaction
+
+            }
+            //아닐경우
+             if (followDTO!!.followers.containsKey(currentUserUid)) {//상대방계정에 내가 팔로우 했을 때
+               followDTO!!.followerCount=followDTO!!.followerCount -1  //팔로우 취소 코드
+               followDTO!!.followers.remove(currentUserUid!!)  //내 uid 제거
+             }else{//팔로우를 안했을 경우
+                 followDTO!!.followerCount=followDTO!!.followerCount +1
+                 followDTO!!.followers[currentUserUid!!]= true//나의 uid 추가
+             }
+              transaction.set(tsDocFollower,followDTO!!)//DB에 값 저장
+              return@runTransaction
+
+        }
+
+    }
+
+
     //올린 이미지를 다운받음
     fun  getProfileimage(){
         firestore?.collection("profileimages")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
