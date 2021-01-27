@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.sunystagram.LoginActivity
 import com.example.sunystagram.MainActivity
 import com.example.sunystagram.R
+import com.example.sunystagram.navigation.model.AlarmDTO
 import com.example.sunystagram.navigation.model.ContentDTO
 import com.example.sunystagram.navigation.model.FollowDTO
 import com.google.firebase.auth.FirebaseAuth
@@ -148,6 +149,7 @@ class   UserFragment : Fragment() {
                 followDTO = FollowDTO()
                 followDTO!!.followerCount = 1
                 followDTO!!.followers[currentUserUid!!] = true//상대방 계정에 내 uid를 넣어줌
+                followerAlarm(uid!!) //최초 팔로우도 알림가게 
 
                 transaction.set(tsDocFollower,followDTO!!)//DB에 값을 넣어줌
                 return@runTransaction
@@ -160,12 +162,22 @@ class   UserFragment : Fragment() {
              }else{//팔로우를 안했을 경우
                  followDTO!!.followerCount=followDTO!!.followerCount +1
                  followDTO!!.followers[currentUserUid!!]= true//나의 uid 추가
+                 followerAlarm(uid!!)
              }
               transaction.set(tsDocFollower,followDTO!!)//DB에 값 저장
               return@runTransaction
 
         }
 
+    }
+    fun followerAlarm(destinationUid : String) {
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = auth?.currentUser?.email
+        alarmDTO.uid = auth?.currentUser?.uid
+        alarmDTO.kind =2
+        alarmDTO.timestamp = System.currentTimeMillis()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
     }
 
 
