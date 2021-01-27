@@ -1,5 +1,6 @@
 package com.example.sunystagram.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 
-class DetailViewFragment : Fragment() {
+class  DetailViewFragment : Fragment() {
     var firestore: FirebaseFirestore? = null
     var uid : String?= null
 
@@ -103,6 +104,14 @@ class DetailViewFragment : Fragment() {
                     bundle.putString("userId",contentDTOs[p1].UserId)
                     fragment.arguments = bundle
                     activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+                }
+                //말풍선 클릭시 commentactivity를 띄움
+                viewHolder.detailviewitem_comment_imageview.setOnClickListener { v->
+                    var  intent = Intent(v.context, CommentActivity::class.java)
+                    intent.putExtra("contentUid",contntUidLIst[p1])
+                    startActivity(intent)
+
+
                 }
              }
              //선택한 이미지의 uid를 받아와 좋아요
