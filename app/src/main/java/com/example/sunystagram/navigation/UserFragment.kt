@@ -1,4 +1,4 @@
-package com.example.sunystagram.navigation
+ package com.example.sunystagram.navigation
 
 import android.content.Intent
 import android.graphics.PorterDuff
@@ -116,7 +116,7 @@ class   UserFragment : Fragment() {
 
     }
     fun requestFollow() {
-        var tsDocFollowing = firestore!!.collection("users").document(currentUserUid!!) //내가 상대방 누가 팔로우하는지
+        var tsDocFollowing = firestore?.collection("users")?.document(currentUserUid!!) //내가 상대방 누가 팔로우하는지
         firestore?.runTransaction { transaction ->
             var followDTO = transaction.get(tsDocFollowing!!).toObject(FollowDTO::class.java)
             if (followDTO == null) {
@@ -175,9 +175,11 @@ class   UserFragment : Fragment() {
             if (documentSnapshot ==null ) return@addSnapshotListener //코드 안전성을 위함
             if (documentSnapshot.data != null) { // 값이 있으면 이미지주소를 받아옴
                 var url = documentSnapshot?.data!!["image"]
-                Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.account_iv_profile!!) //이미지 다운
-            }
+                Glide.with(activity!!)
+                        .load(url)
+                        .apply(RequestOptions().circleCrop()).into(fragmentView!!.account_iv_profile)            }
          }
+
     }
     inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
@@ -215,8 +217,7 @@ class   UserFragment : Fragment() {
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
             var imageview = (p0 as CustomViewHolder).imageview
-            Glide.with(p0.itemView.context).load(contentDTOs[p1].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)
-        }
+            Glide.with(p0.itemView.context).load(contentDTOs[p1].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)  }
 
     }
 }
