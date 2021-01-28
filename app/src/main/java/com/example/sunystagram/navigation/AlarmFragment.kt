@@ -76,7 +76,7 @@ class AlarmFragment : Fragment() {
 
                 }
                 2 -> { //follow 이벤트 알람
-                    var str_0 = alarmDTOList[p1].userId +""+ getString(R.string.alarm_follow  ) //    alaremDTOList에서 userid를 받아옴
+                    var str_0 = alarmDTOList[p1].userId +""+ getString(R.string.alarm_follow) //    alaremDTOList에서 userid를 받아옴
                     view.commentviewitem_textview_profile.text = str_0     //follow  알람
 
 

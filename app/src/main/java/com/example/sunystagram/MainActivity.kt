@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_main.*
@@ -67,11 +68,26 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return false //어떤 조건도 만족하지 않을때
 
     }
+
     fun  setToolbarDefault(){
         toolbar_username.visibility = View.GONE
         toolbar_btn_back.visibility = View.GONE
         toolbar_title_image.visibility = View.VISIBLE
 
+    }
+
+    //특정 디비아스에 받기 위해 기기마다 토큰 id 받아오기d위해 토큰 생성
+    fun registerPushToken(){
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            task ->
+            var token = task.result?.token
+            var  uid = FirebaseAuth.getInstance().currentUser?.uid
+            var map = mutableMapOf<String,Any>()
+            map["pushToken"] = token!!
+
+            FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
+
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +99,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         //set default screen
         bottom_navigation.selectedItemId = R.id.action_home
+        registerPushToken() //로그인 하자마자 DB에 저장되도록  
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
